@@ -8,11 +8,15 @@ import random
 import io
 import os
 
+from flask_cors import CORS
+
 import common
 
 app = Flask(__name__) 
+CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-@app.route('/a/', methods=['GET','POST'])
+@app.route('/api/a/', methods=['GET','POST'])
 def phongvetaulyson():
     response = {}  
     response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com finish hack 1 time!!"
@@ -23,7 +27,7 @@ def phongvetaulyson():
     # Return the response in json format
     return jsonify(response)
 
-@app.route('/b/', methods=['GET','POST'])
+@app.route('/api/b/', methods=['GET','POST'])
 def lysonexpress():
     response = {}  
     response["MESSAGE"] = f"Welcome https://www.lysonexpress.com finish hack 1 time!!"
@@ -34,7 +38,7 @@ def lysonexpress():
     # Return the response in json format
     return jsonify(response)
 
-@app.route('/c/', methods=['GET','POST'])
+@app.route('/api/c/', methods=['GET','POST'])
 def phongvesaky():
     response = {}  
     response["MESSAGE"] = f"Welcome https://www.phongvesaky.com finish hack 1 time!!"
