@@ -25,7 +25,7 @@ def phongvetaulyson():
     common.phongvetaulyson(1)
 
     # Return the response in json format
-    return jsonify(response)
+    return jsonify([response])
 
 @app.route('/api/b/', methods=['GET','POST'])
 def lysonexpress():
@@ -36,7 +36,7 @@ def lysonexpress():
     common.lysonexpress(1)
 
     # Return the response in json format
-    return jsonify(response)
+    return jsonify([response])
 
 @app.route('/api/c/', methods=['GET','POST'])
 def phongvesaky():
@@ -47,7 +47,7 @@ def phongvesaky():
     common.phongvesaky(1)
 
     # Return the response in json format
-    return jsonify(response)
+    return jsonify([response])
 
 
 @app.route('/getmsg/', methods=['GET'])
