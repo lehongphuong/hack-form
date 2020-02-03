@@ -18,7 +18,7 @@ def phongvetaulyson():
     response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com finish hack 100 time!!"
 
     # start hack
-    common.phongvetaulyson(100)
+    common.phongvetaulyson(5)
 
     # Return the response in json format
     return jsonify(response)
@@ -29,7 +29,7 @@ def lysonexpress():
     response["MESSAGE"] = f"Welcome https://www.lysonexpress.com finish hack 100 time!!"
 
     # start hack
-    common.lysonexpress(100)
+    common.lysonexpress(5)
 
     # Return the response in json format
     return jsonify(response)
@@ -40,7 +40,7 @@ def phongvesaky():
     response["MESSAGE"] = f"Welcome https://www.phongvesaky.com finish hack 100 time!!"
 
     # start hack
-    common.phongvesaky(100)
+    common.phongvesaky(5)
 
     # Return the response in json format
     return jsonify(response)

@@ -71,7 +71,7 @@ def phongvetaulyson(number):
 
         print('phongvetaulyson', (count+1))
         
-        time.sleep(random.randint(60,900))        
+        # time.sleep(random.randint(60,900))        
     
     driver.close()  
 
@@ -134,7 +134,7 @@ def lysonexpress(number):
 
         print('lysonexpress', (count+1))
         
-        time.sleep(random.randint(60,900))        
+        # time.sleep(random.randint(60,900))        
     
     driver.close()  
 
@@ -197,6 +197,6 @@ def phongvesaky(number):
 
         print('phongvesaky', (count+1))
         
-        time.sleep(random.randint(60,900))        
+        # time.sleep(random.randint(60,900))        
     
     driver.close()  
