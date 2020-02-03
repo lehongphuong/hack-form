@@ -1,6 +1,28 @@
 # app.py
 from flask import Flask, request, jsonify
-app = Flask(__name__)
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys 
+import time
+import random 
+import io
+import os
+
+import common
+
+app = Flask(__name__) 
+
+@app.route('/a/', methods=['GET'])
+def phongvetaulyson():
+    response = {}  
+    response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com to our awesome platform!!"
+
+    # start hack
+    common.phongvetaulyson(10)
+
+    # Return the response in json format
+    return jsonify(response)
+
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
