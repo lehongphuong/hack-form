@@ -15,10 +15,32 @@ app = Flask(__name__)
 @app.route('/a/', methods=['GET'])
 def phongvetaulyson():
     response = {}  
-    response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com to our awesome platform!!"
+    response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com finish hack 100 time!!"
 
     # start hack
-    common.phongvetaulyson(10)
+    common.phongvetaulyson(100)
+
+    # Return the response in json format
+    return jsonify(response)
+
+@app.route('/b/', methods=['GET'])
+def lysonexpress():
+    response = {}  
+    response["MESSAGE"] = f"Welcome https://www.lysonexpress.com finish hack 100 time!!"
+
+    # start hack
+    common.lysonexpress(100)
+
+    # Return the response in json format
+    return jsonify(response)
+
+@app.route('/c/', methods=['GET'])
+def phongvesaky():
+    response = {}  
+    response["MESSAGE"] = f"Welcome https://www.phongvesaky.com finish hack 100 time!!"
+
+    # start hack
+    common.phongvesaky(100)
 
     # Return the response in json format
     return jsonify(response)

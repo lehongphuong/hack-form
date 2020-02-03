@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys 
+from selenium.webdriver.support.ui import Select
 import time
 import random 
 import io
@@ -68,8 +69,134 @@ def phongvetaulyson(number):
         # submit
         driver.find_element_by_css_selector(".appsMaterialWizButtonPaperbuttonEl").click() 
 
-        print(count+1)
+        print('phongvetaulyson', (count+1))
         
-        # time.sleep(random.randint(60,600))        
+        time.sleep(random.randint(60,900))        
+    
+    driver.close()  
+
+
+def lysonexpress(number): 
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    driver.set_window_size(1366, 728)
+    
+    for count in range(0,number): 
+        driver.get("https://lysonexpress.com/")
+        time.sleep(1)
+        
+        # tim ve
+        driver.find_element_by_css_selector(".ant-select-selection__placeholder").click()
+        driver.find_element_by_css_selector(".ant-select-dropdown-menu-item-active").click()
+        driver.find_element_by_css_selector(".return-check-box > span:nth-child(2)").click()
+        
+        ngay_di = driver.find_element_by_css_selector("#beginDate .ant-calendar-picker-input")        
+        start_day = random.randint(3,27)
+        start_month = str(random.randint(2,3))
+        start_date =  "2020" + "-" +  str(start_month) + "-" + str(start_day)
+        ngay_di.send_keys(start_date) 
+        
+        ngay_ve = driver.find_element_by_css_selector("#returnDate .ant-calendar-picker-input")  
+        end_date =  "2020" + "-" +  str(start_month) + "-" + str(start_day + 2)
+        ngay_ve.send_keys(end_date) 
+        
+        driver.find_element_by_css_selector(".btn-booking").click()
+ 
+        # chọn vé
+        time.sleep(2) 
+        for x in range(0,random.randint(3,20)): 
+            # vé về
+            driver.find_element_by_css_selector(".border-top > .ship-list .ant-btn-primary").click() 
+
+            # vé đi
+            driver.find_element_by_css_selector("div:nth-child(1) > .ship-list .ant-btn-primary").click() 
+        
+        # submit
+        driver.find_element_by_css_selector(".border-top > .ant-row .ant-btn-primary").click()
+        
+        # dien thong tin  
+        ten_khach_hang = driver.find_element_by_css_selector("#fullName")
+        ten_khach_hang.clear()
+        name_customer = mock_first_name[random.randint(0, 35)] + ' ' + mock_middle_name[random.randint(0, 96)] + ' ' + mock_last_name[random.randint(0, 98)]
+        ten_khach_hang.send_keys(name_customer)
+        
+        
+        ho_ten = driver.find_element_by_css_selector("#email")
+        ho_ten.clear()
+        ho_ten.send_keys(mock_email[random.randint(0,679)])
+        
+        dien_thoai = driver.find_element_by_css_selector("#phone")
+        dien_thoai.clear()
+        dien_thoai.send_keys(mock_phone[random.randint(0,1069)]) 
+          
+
+        # submit
+        driver.find_element_by_css_selector(".tab-pane > .ant-row .ant-btn-primary").click()  
+
+        print('lysonexpress', (count+1))
+        
+        time.sleep(random.randint(60,900))        
+    
+    driver.close()  
+
+
+
+def phongvesaky(number): 
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    driver.set_window_size(1366, 728)
+    
+    for count in range(0,number): 
+        driver.get("https://phongvesaky.com/")
+
+        noi_di = driver.find_element_by_css_selector("#wpforms-5-field_12_1")
+        noi_di.click()
+        
+        noi_ve = driver.find_element_by_css_selector("#wpforms-5-field_12_2")
+        noi_ve.click() 
+
+        ngay_di = Select(driver.find_element_by_css_selector("#wpforms-5-field_31")) 
+        start_day = random.randint(3,11)
+        end_day = str(start_day + 2)
+        if(int(start_day) < 10): 
+            if(int(start_day + 2)<10):                
+                end_day = '0' + str(start_day + 2)
+                
+            start_day = '0'+ str(start_day)
+            
+        start_month = random.randint(2,2)
+        if(int(start_month)<10):
+            start_month = '0'+str(start_month)
+        
+        start_date = str(start_day) + "/" + str(start_month) + "/2020"
+        ngay_di.select_by_visible_text(start_date)
+        
+        ngay_ve = Select(driver.find_element_by_css_selector("#wpforms-5-field_34"))
+        end_date = str(end_day) + "/" + str(start_month) + "/2020"
+        ngay_ve.select_by_visible_text(end_date) 
+        
+        gio_di = Select(driver.find_element_by_css_selector("#wpforms-5-field_17")) 
+        gio_di.select_by_index(random.randint(1,6)) 
+        
+        gio_ve = Select(driver.find_element_by_css_selector("#wpforms-5-field_35")) 
+        gio_ve.select_by_index(random.randint(1,6)) 
+
+        so_ve = driver.find_element_by_css_selector("#wpforms-5-field_16")
+        so_ve.clear()
+        so_ve.send_keys(random.randint(2, 30)) 
+        
+        ten_khach_hang = driver.find_element_by_css_selector("#wpforms-5-field_0")
+        ten_khach_hang.clear()
+        name_customer = mock_first_name[random.randint(0, 35)] + ' ' + mock_middle_name[random.randint(0, 96)] + ' ' + mock_last_name[random.randint(0, 98)]
+        ten_khach_hang.send_keys(name_customer) 
+
+        dien_thoai = driver.find_element_by_css_selector("#wpforms-5-field_3")
+        dien_thoai.clear()
+        dien_thoai.send_keys(mock_phone[random.randint(0,1069)])   
+
+        # submit
+        driver.find_element_by_css_selector("#wpforms-submit-5").click()   
+
+        print('phongvesaky', (count+1))
+        
+        time.sleep(random.randint(60,900))        
     
     driver.close()  
