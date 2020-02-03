@@ -103,7 +103,7 @@ def lysonexpress(number):
  
         # chọn vé
         time.sleep(2) 
-        for x in range(0,random.randint(3,20)): 
+        for count in range(0,random.randint(3,20)): 
             # vé về
             driver.find_element_by_css_selector(".border-top > .ship-list .ant-btn-primary").click() 
 
