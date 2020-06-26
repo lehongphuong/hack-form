@@ -13,6 +13,7 @@ from firebase import firebase
 from flask_cors import CORS
 
 import common
+import database
 
 app = Flask(__name__) 
 CORS(app)
@@ -45,15 +46,10 @@ def booking():
 
 @app.route('/api/test/', methods=['GET','POST'])
 def test():  
-    xxx = firebase.FirebaseApplication('https://green-planet-team.firebaseio.com/', None)
-    data =  { 'Name': 'John Doe',
-            'RollNo': 3,
-            'Percentage': 70.02
-            }
-    result = xxx.post('/green-planet-team/booking/',data)
-    print(result)
+    id = '3ckOjcgHN2Mrpm3VzI3z'
     
-
+    result = database.update_status(id) 
+    
     response = {}  
     response["MESSAGE"] = result 
  
