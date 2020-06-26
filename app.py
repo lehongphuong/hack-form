@@ -11,6 +11,7 @@ import threading
 from firebase import firebase
 
 from flask_cors import CORS
+import flask
 
 import common
 import database
@@ -23,11 +24,20 @@ CORS(app)
 
 @app.route('/api/booking/', methods=['GET','POST'])
 def booking():
-    id = request.form.get('id')
-    store = request.form.get('store')
-    pid = request.form.get('pid')
-    size = request.form.get('size')
-    amount = request.form.get('amount')
+    if flask.request.method == 'POST': 
+        id = request.form.get('id')
+        store = request.form.get('store')
+        pid = request.form.get('pid')
+        size = request.form.get('size')
+        amount = request.form.get('amount')
+    else: 
+        id = request.args.get('id')
+        store = request.args.get('store')
+        pid = request.args.get('pid')
+        size = request.args.get('size')
+        amount = request.args.get('amount') 
+
+    print(id,store,pid,size,amount)
 
     response = {}  
     response["MESSAGE"] = f"Booking finish 1 time!!"
