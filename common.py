@@ -160,7 +160,6 @@ def booking(store, pid, size, amount):
         url = 'https://store.architectureandsneakers.com/?pid=' + pid
         booking_architectureandsneakers(url, size, amount)
 
-
 store = 'architectureandsneakers'
 pid = '151555065'
 size = '27.0'

@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-@app.route('/api/a/', methods=['GET','POST'])
+@app.route('/api/booking/', methods=['GET','POST'])
 def booking():
     store = request.form.get('store')
     pid = request.form.get('pid')
@@ -30,7 +30,7 @@ def booking():
     store = 'architectureandsneakers'
     pid = '151555065'
     size = '27.0'
-    amount = 2 
+    amount = 1
 
     xxx = threading.Thread(target=common.booking, args=(store, pid, size, amount))
     xxx.start()
