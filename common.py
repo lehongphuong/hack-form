@@ -8,15 +8,14 @@ import time
 import random 
 import io
 import os
+import database
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
-# mock data
-
-
+# mock data  
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
@@ -28,7 +27,7 @@ sizes = {
     '27.0': '.lbl6', '27.5': '.lbl7', '28.0': '.lbl8', '28.5': '.lbl9', '29.0': '.lbl10', '30.0': '.lbl11'
 } 
 
-def booking_architectureandsneakers(url, size, amount):
+def booking_architectureandsneakers(url, size, amount, id):
     # driver = webdriver.Chrome(executable_path="/Volumes/Data/ProjectPrograming/python/seleniumdriver/chromedriver")
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     driver.set_window_size(1366, 728)
@@ -161,30 +160,30 @@ def booking_architectureandsneakers(url, size, amount):
         print('time to much 5')
 
     print('end job booking')
+    database.update_status(id)
     # time.sleep(5)
-    driver.close()
+    driver.close() 
 
-
-def booking(store, pid, size, amount):
+def booking(store, pid, size, amount, id):
     print('start job booking')
     if store == 'architectureandsneakers':
         url = 'https://store.architectureandsneakers.com/?pid=' + pid
-        booking_architectureandsneakers(url, size, amount)
+        booking_architectureandsneakers(url, size, amount, id)
 
-store = 'architectureandsneakers'
-pid = '151555065'
-size = '27.0'
-amount = 2 
+# store = 'architectureandsneakers'
+# pid = '151555065'
+# size = '27.0'
+# amount = 2 
 
-arrayThreads = []
-for x in range(0, 2):
-    arrayThreads.append(threading.Thread(target=booking, args=(store, pid, size, amount)))
+# arrayThreads = []
+# for x in range(0, 2):
+#     arrayThreads.append(threading.Thread(target=booking, args=(store, pid, size, amount)))
 
-for x in range(0, 2):
-    arrayThreads[x].start()
+# for x in range(0, 2):
+#     arrayThreads[x].start()
 
-for x in range(0, 2):
-    arrayThreads[x].join()
+# for x in range(0, 2):
+#     arrayThreads[x].join()
 
 
 

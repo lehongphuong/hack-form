@@ -23,24 +23,25 @@ CORS(app)
 
 @app.route('/api/booking/', methods=['GET','POST'])
 def booking():
+    id = request.form.get('id')
     store = request.form.get('store')
     pid = request.form.get('pid')
     size = request.form.get('size')
     amount = request.form.get('amount')
 
     response = {}  
-    response["MESSAGE"] = f"Booing finish 1 time!!"
+    response["MESSAGE"] = f"Booking finish 1 time!!"
     
-    store = 'architectureandsneakers'
-    pid = '151555065'
-    size = '27.0'
-    amount = 1
-    print('start booking')
+    # store = 'architectureandsneakers'
+    # pid = '151555065'
+    # size = '27.0'
+    # amount = 1
+    print('start booking', id)
 
-    xxx = threading.Thread(target=common.booking, args=(store, pid, size, amount))
+    xxx = threading.Thread(target=common.booking, args=(store, pid, size, amount, id))
     xxx.start()
     xxx.join() 
-    print('end booking')
+    print('end booking', id)
 
     # Return the response in json format
     return jsonify([response])
