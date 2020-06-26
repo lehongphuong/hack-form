@@ -8,6 +8,7 @@ import random
 import io
 import os
 import threading
+from firebase import firebase
 
 from flask_cors import CORS
 
@@ -25,7 +26,7 @@ def booking():
     amount = request.form.get('amount')
 
     response = {}  
-    response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com finish hack 1 time!!"
+    response["MESSAGE"] = f"Booing finish 1 time!!"
     
     store = 'architectureandsneakers'
     pid = '151555065'
@@ -39,6 +40,24 @@ def booking():
     # Return the response in json format
     return jsonify([response])
 
+
+@app.route('/api/test/', methods=['GET','POST'])
+def test():  
+    firebase = firebase.FirebaseApplication('https://green-planet-team.firebaseio.com', None)
+    data =  { 'Name': 'John Doe',
+            'RollNo': 3,
+            'Percentage': 70.02
+            }
+    result = firebase.post('/green-planet-team/Students/',data)
+    print(result)
+    
+
+    response = {}  
+    response["MESSAGE"] = result 
+ 
+
+    # Return the response in json format
+    return jsonify([response])
 
 
 @app.route('/getmsg/', methods=['GET'])
