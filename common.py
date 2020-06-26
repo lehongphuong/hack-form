@@ -47,6 +47,12 @@ def booking_architectureandsneakers(url, size, amount):
         driver.find_element_by_css_selector("#btnCartin").click()
     except TimeoutException:
         print('time to much 1')  
+        # size
+        driver.find_element_by_css_selector(sizes[size]).click()
+        driver.find_element_by_css_selector(sizes[size]).click()
+
+        driver.find_element_by_css_selector("#btnCartin").click()
+        driver.find_element_by_css_selector("#btnCartin").click()
 
     # add to cart
     delay = 10  # seconds
