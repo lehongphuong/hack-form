@@ -58,7 +58,7 @@ def booking_architectureandsneakers(url, size, amount, id):
     try:
         WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'button--is_light')))
         max_product = int(driver.find_element_by_xpath("//cms-flexible-number-field").get_attribute('max'))
-        if amount < max_product:
+        if int(amount) < max_product:
             driver.find_element_by_xpath(
                 "//cms-flexible-number-field/div/div/select/option[@value="+str(amount)+"]").click()
         else:
