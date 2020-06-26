@@ -38,7 +38,7 @@ def booking_architectureandsneakers(url, size, amount):
 
     delay = 10  # seconds
     try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'lbl0')))
+        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'btnCartin')))
         # size
         driver.find_element_by_css_selector(sizes[size]).click()
         driver.find_element_by_css_selector(sizes[size]).click()
