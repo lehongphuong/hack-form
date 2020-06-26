@@ -45,7 +45,7 @@ def booking_architectureandsneakers(url, size, amount):
         driver.find_element_by_css_selector("#btnCartin").click()
         driver.find_element_by_css_selector("#btnCartin").click()
     except TimeoutException:
-        print('time to much')  
+        print('time to much 1')  
 
     # add to cart
     delay = 10  # seconds
@@ -62,7 +62,7 @@ def booking_architectureandsneakers(url, size, amount):
         # click booking
         driver.find_element_by_css_selector(".button.button--is_primary.button--is_light").click()
     except TimeoutException:
-        print('time to much')
+        print('time to much 2')
 
     # go to cart
     delay = 10  # seconds
@@ -71,7 +71,7 @@ def booking_architectureandsneakers(url, size, amount):
         print('xong')
         driver.find_element_by_xpath("//li[@id='cart']/a[not (@class)]").click()
     except TimeoutException:
-        print('time to much')
+        print('time to much 3')
 
     # payment click
     delay = 10  # seconds
@@ -80,7 +80,7 @@ def booking_architectureandsneakers(url, size, amount):
         print('xong')
         driver.find_element_by_xpath("//div[@class='checkout_button_container']/button").click()
     except TimeoutException:
-        print('time to much')
+        print('time to much 4')
 
     # fill info
     delay = 10  # seconds
@@ -152,7 +152,7 @@ def booking_architectureandsneakers(url, size, amount):
         driver.find_element_by_css_selector(".button.button--is_primary").submit()
 
     except TimeoutException:
-        print('time to much')
+        print('time to much 5')
 
     print('end job booking')
     # time.sleep(5)
