@@ -43,12 +43,12 @@ def booking():
 
 @app.route('/api/test/', methods=['GET','POST'])
 def test():  
-    firebase = firebase.FirebaseApplication('https://green-planet-team.firebaseio.com', None)
+    xxx = firebase.FirebaseApplication('https://green-planet-team.firebaseio.com', None)
     data =  { 'Name': 'John Doe',
             'RollNo': 3,
             'Percentage': 70.02
             }
-    result = firebase.post('/green-planet-team/Students/',data)
+    result = xxx.post('/green-planet-team/Students/',data)
     print(result)
     
 
