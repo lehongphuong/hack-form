@@ -119,7 +119,6 @@ def booking_architectureandsneakers(url, size, amount):
         #     print('time to much email')
 
         address_name = driver.find_element_by_id("address_name")
-        address_name.click()
         address_name.clear()
         address_name.send_keys("Le Hong Phuong")
 
