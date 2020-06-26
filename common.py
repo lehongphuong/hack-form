@@ -34,6 +34,7 @@ def booking_architectureandsneakers(url, size, amount):
     driver.set_window_size(1366, 728)
 
     driver.get(url)
+    print('url', url)
 
     delay = 10  # seconds
     try:
