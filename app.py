@@ -32,10 +32,12 @@ def booking():
     pid = '151555065'
     size = '27.0'
     amount = 1
+    print('start booking')
 
     xxx = threading.Thread(target=common.booking, args=(store, pid, size, amount))
     xxx.start()
     xxx.join() 
+    print('end booking')
 
     # Return the response in json format
     return jsonify([response])

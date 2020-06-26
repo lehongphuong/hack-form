@@ -151,11 +151,13 @@ def booking_architectureandsneakers(url, size, amount):
     except TimeoutException:
         print('time to much')
 
-    time.sleep(5)
+    print('end job booking')
+    # time.sleep(5)
     driver.close()
 
 
 def booking(store, pid, size, amount):
+    print('start job booking')
     if store == 'architectureandsneakers':
         url = 'https://store.architectureandsneakers.com/?pid=' + pid
         booking_architectureandsneakers(url, size, amount)
