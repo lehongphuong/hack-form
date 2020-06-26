@@ -7,6 +7,7 @@ import time
 import random 
 import io
 import os
+import threading
 
 from flask_cors import CORS
 
@@ -17,37 +18,27 @@ CORS(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/api/a/', methods=['GET','POST'])
-def phongvetaulyson():
+def booking():
+    store = request.form.get('store')
+    pid = request.form.get('pid')
+    size = request.form.get('size')
+    amount = request.form.get('amount')
+
     response = {}  
     response["MESSAGE"] = f"Welcome https://www.phongvetaulyson.com finish hack 1 time!!"
+    
+    store = 'architectureandsneakers'
+    pid = '151555065'
+    size = '27.0'
+    amount = 2 
 
-    # start hack
-    common.phongvetaulyson(1)
-
-    # Return the response in json format
-    return jsonify([response])
-
-@app.route('/api/b/', methods=['GET','POST'])
-def lysonexpress():
-    response = {}  
-    response["MESSAGE"] = f"Welcome https://www.lysonexpress.com finish hack 1 time!!"
-
-    # start hack
-    common.lysonexpress(1)
+    xxx = threading.Thread(target=common.booking, args=(store, pid, size, amount))
+    xxx.start()
+    xxx.join() 
 
     # Return the response in json format
     return jsonify([response])
 
-@app.route('/api/c/', methods=['GET','POST'])
-def phongvesaky():
-    response = {}  
-    response["MESSAGE"] = f"Welcome https://www.phongvesaky.com finish hack 1 time!!"
-
-    # start hack
-    common.phongvesaky(1)
-
-    # Return the response in json format
-    return jsonify([response])
 
 
 @app.route('/getmsg/', methods=['GET'])
