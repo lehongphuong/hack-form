@@ -16,10 +16,12 @@ import common
 import database
 
 app = Flask(__name__) 
+app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}}) 
 
 @app.route('/api/booking/', methods=['GET','POST'])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def booking():
     store = request.form.get('store')
     pid = request.form.get('pid')
@@ -49,7 +51,7 @@ def test():
     id = '3ckOjcgHN2Mrpm3VzI3z'
     
     result = database.update_status(id) 
-    
+
     response = {}  
     response["MESSAGE"] = result 
  
