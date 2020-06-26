@@ -26,9 +26,7 @@ chrome_options.add_argument("--no-sandbox")
 sizes = {
     '24.0': '.lbl0', '24.5': '.lbl1', '25.0': '.lbl2', '25.5': '.lbl3', '26.0':'.lbl4', '26.5': '.lbl5',
     '27.0': '.lbl6', '27.5': '.lbl7', '28.0': '.lbl8', '28.5': '.lbl9', '29.0': '.lbl10', '30.0': '.lbl11'
-}
-
-print(sizes['24.0'])
+} 
 
 def booking_architectureandsneakers(url, size, amount):
     # driver = webdriver.Chrome(executable_path="/Volumes/Data/ProjectPrograming/python/seleniumdriver/chromedriver")
@@ -37,15 +35,20 @@ def booking_architectureandsneakers(url, size, amount):
 
     driver.get(url)
 
-    # size
-    driver.find_element_by_css_selector(sizes[size]).click()
-    driver.find_element_by_css_selector(sizes[size]).click()
+    delay = 10  # seconds
+    try:
+        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'lbl0')))
+        # size
+        driver.find_element_by_css_selector(sizes[size]).click()
+        driver.find_element_by_css_selector(sizes[size]).click()
 
-    driver.find_element_by_css_selector("#btnCartin").click()
-    driver.find_element_by_css_selector("#btnCartin").click()
+        driver.find_element_by_css_selector("#btnCartin").click()
+        driver.find_element_by_css_selector("#btnCartin").click()
+    except TimeoutException:
+        print('time to much')  
 
     # add to cart
-    delay = 15  # seconds
+    delay = 10  # seconds
     try:
         WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'button--is_light')))
         max_product = int(driver.find_element_by_xpath("//cms-flexible-number-field").get_attribute('max'))
