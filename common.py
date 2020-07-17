@@ -29,7 +29,8 @@ sizes = {
 
 def booking_architectureandsneakers(url, size, amount, id):
     # driver = webdriver.Chrome(executable_path="/Volumes/Data/ProjectPrograming/python/seleniumdriver/chromedriver")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.set_window_size(1366, 728)
 
     driver.get(url)
