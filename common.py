@@ -184,9 +184,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # exp_y = "2023"  # 4 digits
 # cvv = "491"  # 3 digits
 def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+    print("phuong start 0 ")
     keywords = ["BE@RBRICK ANDY WARHOL"]
     product = None
     # Loop until a product containing all the keywords is found
+    print("phuong start", product)
     while (product == None):
         # Grab all the products on the site
         products = get_products(session)

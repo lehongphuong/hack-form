@@ -35,10 +35,9 @@ def booking():
     response = {}  
     response["MESSAGE"] = f"Booking finish 1 time!!"
 
-    common.booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id)
-    # xxx = threading.Thread(target=common.booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
-    # xxx.start()
-    # xxx.join()
+    xxx = threading.Thread(target=common.booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
+    xxx.start()
+    xxx.join()
 
     # Return the response in json format
     return jsonify([response])
