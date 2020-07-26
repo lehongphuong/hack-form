@@ -186,7 +186,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # exp_y = "2023"  # 4 digits
 # cvv = "491"  # 3 digits
 
-keywords = ["BE@RBRICK ANDY WARHOL"]
+keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
 
 def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
