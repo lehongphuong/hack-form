@@ -186,13 +186,15 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # exp_y = "2023"  # 4 digits
 # cvv = "491"  # 3 digits
 
-keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
-keywords = ["BE@RBRICK ANDY WARHOL"]
 
-def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
+def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
+    keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
+    keywords = ["BE@RBRICK ANDY WARHOL"]
     print('keywords', keywords)
+    product = None
+
     while (product == None):
         # Grab all the products on the site
         products = get_products(session)
@@ -274,8 +276,7 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
 
 
 def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
-    product = None
-    xxx = threading.Thread(target=booking_tokyo, args=(product, card_number, cardholder, exp_m, exp_y, cvv, id))
+    xxx = threading.Thread(target=booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
     xxx.start()
     xxx.join()
 
