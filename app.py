@@ -7,7 +7,7 @@ from flask_cors import CORS
 import flask
 
 import common
-import database
+# import database
 
 app = Flask(__name__) 
 app.config['CORS_HEADERS'] = 'Content-Type'
