@@ -128,7 +128,6 @@ def add_to_cart(session, variant):
     '''
     # Add the product to cart
     link = base_url + "/cart/add.js?quantity=1&id=" + variant
-    return
     response = session.get(link, verify=False)
     # Return the response
     return response
@@ -212,9 +211,9 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong 2")
     # Add the product to cart
     r = add_to_cart(session, variant)
-    return
     # Store the cookies
     cj = r.cookies
+    return
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
 
