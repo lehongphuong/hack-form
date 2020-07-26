@@ -204,7 +204,7 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong 1")
     # Get the variant ID for the size
     variant = '32249936314417' #str(product["variants"][0]["id"])
-    return
+
     start = time.time()
     # Get the cart link
     cart_link = generate_cart_link(session, variant)
