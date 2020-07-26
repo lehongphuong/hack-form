@@ -189,6 +189,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     product = None
     # Loop until a product containing all the keywords is found
     print("phuong start", product)
+    return
     while (product == None):
         # Grab all the products on the site
         products = get_products(session)
