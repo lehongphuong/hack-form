@@ -1,192 +1,266 @@
-import threading
-
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import Select
+from bs4 import BeautifulSoup as soup
+import requests
 import time
-import random 
-import io
-import os
+import json
+import urllib3
+import codecs
+import random
 import database
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+''' ------------------------------ SETTINGS ------------------------------ '''
+# Global settings
+base_url = "https://mct.tokyo"  # Don't add a / at the end
+# Search settings
+# keywords = ["BE@RBRICK BAPE(R) MICKEY MOUSE"]  # Seperate keywords with a comma
+# size = "11"
+# If a size is sold out, a random size will be chosen instead, as a backup plan
+random_size = True
+# To avoid a Shopify soft-ban, a delay of 7.5 seconds is recommended if
+# starting a task much earlier than release time (minutes before release)
+# Otherwise, a 1 second or less delay will be ideal
+search_delay = 1
+# Checkout settings
+email = "helloitpdu@gmail.com"
+fname = "le hong"
+lname = "phuong"
+addy1 = "183 quach thi trang da nang"
+addy2 = ""  # Can be left blank
+city = "Toronto"
+province = "Ontario"
+country = "Canada"
+postal_code = "M1G1E4"
+phone = "4169671111"
+# card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
+# cardholder = "khong minhcong"
+# exp_m = "04"  # 2 digits
+# exp_y = "2023"  # 4 digits
+# cvv = "491"  # 3 digits
+''' ------------------------------- MODULES ------------------------------- '''
 
-# mock data  
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
+def get_products(session):
+    '''
+    Gets all the products from a Shopify site.
+    '''
+    # Download the products
+    link = base_url + "/products.json"
+    r = session.get(link, verify=False)
+    # Load the product data
+    products_json = json.loads(r.text)
+    products = products_json["products"]
+    # Return the products
+    return products
 
-sizes = {
-    '24.0': '.lbl0', '24.5': '.lbl1', '25.0': '.lbl2', '25.5': '.lbl3', '26.0':'.lbl4', '26.5': '.lbl5',
-    '27.0': '.lbl6', '27.5': '.lbl7', '28.0': '.lbl8', '28.5': '.lbl9', '29.0': '.lbl10', '30.0': '.lbl11'
-} 
+def keyword_search(session, products, keywords):
+    '''
+    Searches through given products from a Shopify site to find the a product
+    containing all the defined keywords.
+    '''
+    # Go through each product
+    for product in products:
+        # Set a counter to check if all the keywords are found
+        keys = 0
+        # Go through each keyword
+        for keyword in keywords:
+            # If the keyword exists in the title
+            if(keyword.upper() in product["title"].upper()):
+                # Increment the counter
+                keys += 1
+            # If all the keywords were found
+            if(keys == len(keywords)):
+                print(keys, len(keywords))
+                # Return the product
+                return product
 
-def booking_architectureandsneakers(url, size, amount, id):
-    # driver = webdriver.Chrome(executable_path="/Volumes/Data/ProjectPrograming/python/seleniumdriver/chromedriver")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    driver.set_window_size(1366, 728)
+def generate_cart_link(session, variant):
+    '''
+    Generate the add to cart link for a Shopify site given a variant ID.
+    '''
+    # Create the link to add the product to cart
+    link = base_url + "/cart/" + variant + ":1"
+    # Return the link
+    return link
 
-    driver.get(url)
-    print('url', url)
+def get_payment_token(card_number, cardholder, expiry_month, expiry_year, cvv):
+    '''
+    Given credit card details, the payment token for a Shopify checkout is
+    returned.
+    '''
+    # POST information to get the payment token
+    link = "https://elb.deposit.shopifycs.com/sessions"
+    payload = {
+        "credit_card": {
+            "number": card_number,
+            "name": cardholder,
+            "month": expiry_month,
+            "year": expiry_year,
+            "verification_value": cvv
+        }
+    }
+    r = requests.post(link, json=payload, verify=False)
+    # Extract the payment token
+    payment_token = json.loads(r.text)["id"]
+    # Return the payment token
+    return payment_token
 
-    delay = 10  # seconds
-    try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'btnCartin')))
-        # size
-        driver.find_element_by_css_selector(sizes[size]).click()
-        driver.find_element_by_css_selector(sizes[size]).click()
+def get_shipping(postal_code, country, province, cookie_jar):
+    '''
+    Given address details and the cookies of a Shopify checkout session, a shipping option is returned
+    '''
+    # Get the shipping rate info from the Shopify site
+    link = base_url + "//cart/shipping_rates.json?shipping_address[zip]=" + postal_code + "&shipping_address[country]=" + country + "&shipping_address[province]=" + province
+    r = session.get(link, cookies=cookie_jar, verify=False)
+    # Load the shipping options
+    shipping_options = json.loads(r.text)
+    # Select the first shipping option
+    ship_opt = shipping_options["shipping_rates"][0]["name"].replace(' ', "%20")
+    ship_prc = shipping_options["shipping_rates"][0]["price"]
+    # Generate the shipping token to submit with checkout
+    shipping_option = "shopify-" + ship_opt + "-" + ship_prc
+    # Return the shipping option
+    return shipping_option
 
-        driver.find_element_by_css_selector("#btnCartin").click()
-        driver.find_element_by_css_selector("#btnCartin").click()
-    except TimeoutException:
-        print('time to much 1')  
-        # size
-        driver.find_element_by_css_selector(sizes[size]).click()
-        driver.find_element_by_css_selector(sizes[size]).click()
+def add_to_cart(session, variant):
+    '''
+    Given a session and variant ID, the product is added to cart and the
+    response is returned.
+    '''
+    # Add the product to cart
+    link = base_url + "/cart/add.js?quantity=1&id=" + variant
+    response = session.get(link, verify=False)
+    # Return the response
+    return response
 
-        driver.find_element_by_css_selector("#btnCartin").click()
-        driver.find_element_by_css_selector("#btnCartin").click()
+def submit_customer_info(session, cookie_jar):
+    '''
+    Given a session and cookies for a Shopify checkout, the customer's info
+    is submitted.
+    '''
+    # Submit the customer info
+    payload = {
+        "utf8": u"\u2713",
+        "_method": "patch",
+        "authenticity_token": "",
+        "previous_step": "contact_information",
+        "step": "shipping_method",
+        "checkout[email]": email,
+        "checkout[buyer_accepts_marketing]": "0",
+        "checkout[shipping_address][first_name]": fname,
+        "checkout[shipping_address][last_name]": lname,
+        "checkout[shipping_address][company]": "",
+        "checkout[shipping_address][address1]": addy1,
+        "checkout[shipping_address][address2]": addy2,
+        "checkout[shipping_address][city]": city,
+        "checkout[shipping_address][country]": country,
+        "checkout[shipping_address][province]": province,
+        "checkout[shipping_address][zip]": postal_code,
+        "checkout[shipping_address][phone]": phone,
+        "checkout[remember_me]": "0",
+        "checkout[client_details][browser_width]": "1710",
+        "checkout[client_details][browser_height]": "1289",
+        "checkout[client_details][javascript_enabled]": "1",
+        "button": ""
+    }
+    link = base_url + "//checkout.json"
+    response = session.get(link, cookies=cookie_jar, verify=False)
+    # Get the checkout URL
+    link = response.url
+    checkout_link = link
+    # POST the data to the checkout URL
+    response = session.post(link, cookies=cookie_jar, data=payload, verify=False)
+    print("submit_customer_info", response, checkout_link)
 
-    # add to cart
-    delay = 10  # seconds
-    try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'button--is_light')))
-        max_product = int(driver.find_element_by_xpath("//cms-flexible-number-field").get_attribute('max'))
-        if int(amount) < max_product:
-            driver.find_element_by_xpath(
-                "//cms-flexible-number-field/div/div/select/option[@value="+str(amount)+"]").click()
-        else:
-            driver.find_element_by_xpath(
-                "//cms-flexible-number-field/div/div/select/option[@value=" + str(max_product) + "]").click()
+    # Return the response and the checkout link
+    return (response, checkout_link)
+''' ------------------------------- CODE ------------------------------- '''
+# Initialize
+session = requests.session()
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-        # click booking
-        driver.find_element_by_css_selector(".button.button--is_primary.button--is_light").click()
-    except TimeoutException:
-        print('time to much 2')
 
-    # go to cart
-    delay = 10  # seconds
-    try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'cart')))
-        print('xong')
-        driver.find_element_by_xpath("//li[@id='cart']/a[not (@class)]").click()
-    except TimeoutException:
-        print('time to much 3')
 
-    # payment click
-    delay = 10  # seconds
-    try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'checkout_button')))
-        print('xong')
-        driver.find_element_by_xpath("//div[@class='checkout_button_container']/button").click()
-    except TimeoutException:
-        print('time to much 4')
+# card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
+# cardholder = "khong minhcong"
+# exp_m = "04"  # 2 digits
+# exp_y = "2023"  # 4 digits
+# cvv = "491"  # 3 digits
+def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+    keywords = ["BE@RBRICK BAPE(R) MICKEY MOUSE"]
+    product = None
+    # Loop until a product containing all the keywords is found
+    while (product == None):
+        # Grab all the products on the site
+        products = get_products(session)
+        # Grab the product defined by keywords
+        product = keyword_search(session, products, keywords)
+        print("phuong", product)
+        if (product == None):
+            time.sleep(search_delay)
 
-    # fill info
-    delay = 10  # seconds
-    try:
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'address_name')))
+    # Get the variant ID for the size
+    variant = product["variants"][0]["id"]
 
-        # # login
-        # driver.find_element_by_css_selector('.customerbar__status').click()
-        # delay = 10  # seconds
-        # try:
-        #     WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'email')))
-        #
-        #     # driver.find_element_by_xpath("//input[@id='email']").__setattr__('value', 'abc')
-        #
-        #     email = driver.find_element_by_id("email")
-        #     driver.execute_script("arguments[0].click();", email)
-        #     driver.execute_script("arguments[0].click();", email)
-        #     # email.clear()
-        #     # email.send_keys("bot.restock1010@gmail.com")
-        #     #
-        #     # password = driver.find_element_by_id("password")
-        #     # password.clear()
-        #     # password.send_keys("Brf3Zdi")
-        #     #
-        #     # # login click
-        #     # driver.find_element_by_css_selector(".button.button--is_success").submit()
-        #
-        # except TimeoutException:
-        #     print('time to much email')
+    start = time.time()
+    # Get the cart link
+    cart_link = generate_cart_link(session, variant)
+    # Add the product to cart
+    r = add_to_cart(session, variant)
+    # Store the cookies
+    cj = r.cookies
+    # Get the payment token
+    p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
+    print("get_payment_token", p)
+    # Submit customer info and get the checkout url
+    (r, checkout_link) = submit_customer_info(session, cj)
+    # Get the shipping info
+    ship = get_shipping(postal_code, country, province, cj)
 
-        address_name = driver.find_element_by_id("address_name")
-        address_name.clear()
-        address_name.send_keys("Le Hong Phuong")
+    # Get the payment gateway ID
+    link = checkout_link + "?step=payment_method"
+    r = session.get(link, cookies=cj, verify=False)
+    bs = soup(r.text, "html.parser")
+    div = bs.find("div", {"class": "radio__input"})
+    # print(div)
+    gateway = ""
+    values = str(div.input).split('"')
+    for value in values:
+        if value.isnumeric():
+            gateway = value
+            break
+    # Submit the payment
+    link = checkout_link
+    payload = {
+        "utf8": u"\u2713",
+        "_method": "patch",
+        "authenticity_token": "",
+        "previous_step": "payment_method",
+        "step": "",
+        "s": p,
+        "checkout[payment_gateway]": gateway,
+        "checkout[credit_card][vault]": "false",
+        "checkout[different_billing_address]": "true",
+        "checkout[billing_address][first_name]": fname,
+        "checkout[billing_address][last_name]": lname,
+        "checkout[billing_address][address1]": addy1,
+        "checkout[billing_address][address2]": addy2,
+        "checkout[billing_address][city]": city,
+        "checkout[billing_address][country]": country,
+        "checkout[billing_address][province]": province,
+        "checkout[billing_address][zip]": postal_code,
+        "checkout[billing_address][phone]": phone,
+        "checkout[shipping_rate][id]": ship,
+        "complete": "1",
+        "checkout[client_details][browser_width]": str(random.randint(1000, 2000)),
+        "checkout[client_details][browser_height]": str(random.randint(1000, 2000)),
+        "checkout[client_details][javascript_enabled]": "1",
+        "g-recaptcha-repsonse": "",
+        "button": ""
+        }
+    r = session.post(link, cookies=cj, data=payload, verify=False)
+    print("finish", r)
+    end = time.time()
+    print(end -start)
 
-        furigana = driver.find_element_by_id("furigana")
-        furigana.clear()
-        furigana.send_keys("")
-
-        address_postal_code = driver.find_element_by_id("address_postal_code")
-        address_postal_code.clear()
-        address_postal_code.send_keys("1508512")
-
-        address_address1 = driver.find_element_by_id("address_address1")
-        address_address1.clear()
-        address_address1.send_keys("渋谷区桜丘町")
-
-        address_address2 = driver.find_element_by_id("address_address2")
-        address_address2.clear()
-        address_address2.send_keys("123 address_address2")
-
-        address_phone_number = driver.find_element_by_id("address_phone_number")
-        address_phone_number.clear()
-        address_phone_number.send_keys("08000123456")
-
-        fax = driver.find_element_by_id("fax")
-        fax.clear()
-        fax.send_keys("0312341234")
-
-        email = driver.find_element_by_id("email")
-        email.clear()
-        email.send_keys("helloitpdu@gmail.com")
-
-        # click radio
-        radio = driver.find_element_by_xpath("//input[@id='payment_method_650079']")
-        driver.execute_script("arguments[0].click();", radio)
-
-        # click booking
-        driver.find_element_by_css_selector(".button.button--is_primary").submit()
-
-    except TimeoutException:
-        print('time to much 5')
-
-    print('end job booking')
     database.update_status(id)
-    # time.sleep(5)
-    driver.close() 
-
-def booking(store, pid, size, amount, id):
-    print('start job booking')
-    if store == 'architectureandsneakers':
-        url = 'https://store.architectureandsneakers.com/?pid=' + pid
-        booking_architectureandsneakers(url, size, amount, id)
-
-# store = 'architectureandsneakers'
-# pid = '151555065'
-# size = '27.0'
-# amount = 2 
-
-# arrayThreads = []
-# for x in range(0, 2):
-#     arrayThreads.append(threading.Thread(target=booking, args=(store, pid, size, amount)))
-
-# for x in range(0, 2):
-#     arrayThreads[x].start()
-
-# for x in range(0, 2):
-#     arrayThreads[x].join()
-
-
-
 
 
 
