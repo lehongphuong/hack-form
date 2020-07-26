@@ -195,25 +195,27 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
         print("phuong", product)
         if (product == None):
             time.sleep(search_delay)
-    print("phuong product", product)
+
+    print("phuong 1")
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
 
     start = time.time()
     # Get the cart link
     cart_link = generate_cart_link(session, variant)
+    print("phuong 2")
     # Add the product to cart
     r = add_to_cart(session, variant)
     # Store the cookies
     cj = r.cookies
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
-    print("get_payment_token", p)
+    print("phuong 3")
     # Submit customer info and get the checkout url
     (r, checkout_link) = submit_customer_info(session, cj)
     # Get the shipping info
     ship = get_shipping(postal_code, country, province, cj)
-
+    print("phuong 4")
     # Get the payment gateway ID
     link = checkout_link + "?step=payment_method"
     r = session.get(link, cookies=cj, verify=False)
@@ -255,11 +257,12 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
         "g-recaptcha-repsonse": "",
         "button": ""
         }
+    print("phuong 5")
     r = session.post(link, cookies=cj, data=payload, verify=False)
     print("finish", r)
     end = time.time()
     print(end -start)
-
+    print("phuong 6")
     # database.update_status(id)
 
 
