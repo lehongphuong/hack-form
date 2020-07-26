@@ -48,6 +48,7 @@ def get_products(session):
     r = session.get(link, verify=False)
     # Load the product data
     products_json = json.loads(r.text)
+    print('products_json', products_json)
     products = products_json["products"]
     # Return the products
     return products
