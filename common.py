@@ -76,7 +76,7 @@ def generate_cart_link(session, variant):
     Generate the add to cart link for a Shopify site given a variant ID.
     '''
     # Create the link to add the product to cart
-    link = base_url + "/cart/" + variant + ":1"
+    link = base_url + "/cart/" + str(variant) + ":1"
     # Return the link
     return link
 
