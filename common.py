@@ -200,7 +200,7 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
         print("phuong", product)
         if (product == None):
             time.sleep(search_delay)
-    return
+
     print("phuong 1")
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
