@@ -190,14 +190,14 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     # Loop until a product containing all the keywords is found
     print("phuong start", product)
     return
-    while (product == None):
-        # Grab all the products on the site
-        products = get_products(session)
-        # Grab the product defined by keywords
-        product = keyword_search(session, products, keywords)
-        print("phuong", product)
-        if (product == None):
-            time.sleep(search_delay)
+    # while (product == None):
+    #     # Grab all the products on the site
+    #     products = get_products(session)
+    #     # Grab the product defined by keywords
+    #     product = keyword_search(session, products, keywords)
+    #     print("phuong", product)
+    #     if (product == None):
+    #         time.sleep(search_delay)
 
     print("phuong 1")
     # Get the variant ID for the size
