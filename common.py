@@ -192,7 +192,6 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
     print('keywords', keywords)
-    return
     # while (product == None):
     #     # Grab all the products on the site
     #     products = get_products(session)
@@ -204,7 +203,7 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
 
     print("phuong 1")
     # Get the variant ID for the size
-    variant = str(product["variants"][0]["id"])
+    variant = '123' #str(product["variants"][0]["id"])
 
     start = time.time()
     # Get the cart link
