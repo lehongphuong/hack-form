@@ -205,7 +205,6 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
     print(variant)
-    print(1+"abc")
 
     start = time.time()
     # Get the cart link
