@@ -197,7 +197,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
             time.sleep(search_delay)
     print("phuong product", product)
     # Get the variant ID for the size
-    variant = product["variants"][0]["id"]
+    variant = str(product["variants"][0]["id"])
 
     start = time.time()
     # Get the cart link
