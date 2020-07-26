@@ -187,6 +187,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cvv = "491"  # 3 digits
 
 keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
+keywords = ["BE@RBRICK ANDY WARHOL"]
 
 def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
@@ -197,7 +198,6 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
         products = get_products(session)
         # Grab the product defined by keywords
         product = keyword_search(session, products, keywords)
-        print("phuong", product)
         if (product == None):
             time.sleep(search_delay)
 
