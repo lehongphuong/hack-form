@@ -22,21 +22,21 @@ random_size = True
 # Otherwise, a 1 second or less delay will be ideal
 search_delay = 1
 # Checkout settings
-email = "helloitpdu@gmail.com"
-fname = "le hong"
-lname = "phuong"
-addy1 = "183 quach thi trang da nang"
+email = "khong.minhcong@gmail.com"
+fname = "DUCCONG"
+lname = "KHONG"
+addy1 = "福岡県 太宰府市宰府 １−８−５メリーメイト１−１０９号"
 addy2 = ""  # Can be left blank
-city = "Toronto"
-province = "Ontario"
-country = "Canada"
-postal_code = "M1G1E4"
-phone = "4169671111"
-# card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
-# cardholder = "khong minhcong"
-# exp_m = "04"  # 2 digits
+city = "太宰府"
+province = "福岡"
+country = "日本"
+postal_code = "8180117"
+phone = "09082494931"
+# card_number = "4297690111419380"  # No spaces
+# cardholder = "KHONG DUCCONG"
+# exp_m = "09"  # 2 digits
 # exp_y = "2023"  # 4 digits
-# cvv = "491"  # 3 digits
+# cvv = "781"  # 3 digits
 ''' ------------------------------- MODULES ------------------------------- '''
 
 def get_products(session):
