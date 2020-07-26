@@ -49,7 +49,6 @@ def get_products(session):
     # Load the product data
     products_json = json.loads(r.text)
     print('products_json', products_json)
-    return
     products = products_json["products"]
     # Return the products
     return products
@@ -176,9 +175,7 @@ def submit_customer_info(session, cookie_jar):
     # Return the response and the checkout link
     return (response, checkout_link)
 ''' ------------------------------- CODE ------------------------------- '''
-# Initialize
-session = requests.session()
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 
 
@@ -190,6 +187,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+    # Initialize
+    session = requests.session()
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
     keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
