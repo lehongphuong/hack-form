@@ -5,7 +5,7 @@ import json
 import urllib3
 import codecs
 import random
-import database
+# import database
 
 ''' ------------------------------ SETTINGS ------------------------------ '''
 # Global settings
@@ -260,7 +260,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     end = time.time()
     print(end -start)
 
-    database.update_status(id)
+    # database.update_status(id)
 
 
 
