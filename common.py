@@ -178,12 +178,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 
-card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
-cardholder = "khong minhcong"
-exp_m = "04"  # 2 digits
-exp_y = "2023"  # 4 digits
-cvv = "491"  # 3 digits
-def booking_tokyo():
+# card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
+# cardholder = "khong minhcong"
+# exp_m = "04"  # 2 digits
+# exp_y = "2023"  # 4 digits
+# cvv = "491"  # 3 digits
+def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     keywords = ["BE@RBRICK ANDY WARHOL"]
     product = None
     # Loop until a product containing all the keywords is found
@@ -219,7 +219,7 @@ def booking_tokyo():
     r = session.get(link, cookies=cj, verify=False)
     bs = soup(r.text, "html.parser")
     div = bs.find("div", {"class": "radio__input"})
-    print(div)
+    # print(div)
     gateway = ""
     values = str(div.input).split('"')
     for value in values:
@@ -267,5 +267,5 @@ def booking_tokyo():
 
 
 
-booking_tokyo()
+
 
