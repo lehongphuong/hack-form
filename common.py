@@ -213,10 +213,10 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     r = add_to_cart(session, variant)
     # Store the cookies
     cj = r.cookies
-    return
+
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
-
+    return
     print("phuong 3")
     # Submit customer info and get the checkout url
     (r, checkout_link) = submit_customer_info(session, cj)
