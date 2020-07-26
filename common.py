@@ -128,6 +128,7 @@ def add_to_cart(session, variant):
     '''
     # Add the product to cart
     link = base_url + "/cart/add.js?quantity=1&id=" + variant
+    return
     response = session.get(link, verify=False)
     # Return the response
     return response
