@@ -1,3 +1,5 @@
+import threading
+
 from bs4 import BeautifulSoup as soup
 import requests
 import time
@@ -183,13 +185,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # exp_m = "04"  # 2 digits
 # exp_y = "2023"  # 4 digits
 # cvv = "491"  # 3 digits
+
+keywords = ["BE@RBRICK ANDY WARHOL"]
+product = None
+
 def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
-    keywords = ["BE@RBRICK ANDY WARHOL"]
-    product = None
     # Loop until a product containing all the keywords is found
-    print("phuong start", product)
-
     while (product == None):
         # Grab all the products on the site
         products = get_products(session)
@@ -198,7 +200,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
         print("phuong", product)
         if (product == None):
             time.sleep(search_delay)
-    return
+
     print("phuong 1")
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
@@ -269,7 +271,10 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     # database.update_status(id)
 
 
-
+def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
+    xxx = threading.Thread(target=booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
+    xxx.start()
+    xxx.join()
 
 
 
