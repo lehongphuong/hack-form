@@ -180,15 +180,16 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 
-# card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
-# cardholder = "khong minhcong"
-# exp_m = "04"  # 2 digits
-# exp_y = "2023"  # 4 digits
-# cvv = "491"  # 3 digits
+card_number = "3574010086639035"  # No spaces ba năm bảy bốn  0100 tám sáu sáu 3 chín không 35
+cardholder = "khong minhcong"
+exp_m = "04"  # 2 digits
+exp_y = "2023"  # 4 digits
+cvv = "491"  # 3 digits
 
 keywords = ["BE@RBRICK ANDY WARHOL"]
 
-def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
+
+def booking_tokyo():
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
     print('keywords', keywords)
@@ -271,11 +272,14 @@ def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     # database.update_status(id)
 
 
+
+
 def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
-    product = None
-    xxx = threading.Thread(target=booking_tokyo, args=(product, card_number, cardholder, exp_m, exp_y, cvv, id))
-    xxx.start()
-    xxx.join()
+    booking_tokyo()
+    # product = None
+    # xxx = threading.Thread(target=booking_tokyo, args=(product, card_number, cardholder, exp_m, exp_y, cvv, id))
+    # xxx.start()
+    # xxx.join()
 
 
 
