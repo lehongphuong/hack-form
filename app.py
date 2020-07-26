@@ -15,7 +15,7 @@ CORS(app)
 
 @app.route('/api/booking/', methods=['GET','POST'])
 def booking():
-    if flask.request.method == 'POST': 
+    if flask.request.method == 'POST':
         id = request.form.get('id')
         card_number = request.args.get('card_number')
         cardholder = request.args.get('cardholder')
@@ -35,9 +35,10 @@ def booking():
     response = {}  
     response["MESSAGE"] = f"Booking finish 1 time!!"
 
-    xxx = threading.Thread(target=common.booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
-    xxx.start()
-    xxx.join() 
+    common.booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id)
+    # xxx = threading.Thread(target=common.booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
+    # xxx.start()
+    # xxx.join()
 
     # Return the response in json format
     return jsonify([response])
