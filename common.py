@@ -187,9 +187,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cvv = "491"  # 3 digits
 
 keywords = ["BE@RBRICK ANDY WARHOL"]
-product = None
 
-def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+def booking_tokyo(product, card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
     while (product == None):
@@ -272,7 +271,8 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
 
 
 def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
-    xxx = threading.Thread(target=booking_tokyo, args=(card_number, cardholder, exp_m, exp_y, cvv, id))
+    product = None
+    xxx = threading.Thread(target=booking_tokyo, args=(product, card_number, cardholder, exp_m, exp_y, cvv, id))
     xxx.start()
     xxx.join()
 
