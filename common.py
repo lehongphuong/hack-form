@@ -209,7 +209,6 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
     print(variant)
-    return
 
     start = time.time()
     # Get the cart link
@@ -219,7 +218,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     r = add_to_cart(session, variant)
     # Store the cookies
     cj = r.cookies
-
+    return
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
     print("phuong 3")
