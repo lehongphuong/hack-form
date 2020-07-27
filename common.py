@@ -186,6 +186,11 @@ def submit_customer_info(session, cookie_jar):
 
 
 def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+    card_number = "4297690111419380"  # No spaces
+    cardholder = "KHONG DUCCONG"
+    exp_m = "09"  # 2 digits
+    exp_y = "2023"  # 4 digits
+    cvv = "781"  # 3 digits
     # Initialize
     session = requests.session()
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -193,7 +198,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
     print("phuong start 0 ")
     # Loop until a product containing all the keywords is found
     keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
-    keywords = ["BE@RBRICK ANDY WARHOL"]
+    # keywords = ["BE@RBRICK ANDY WARHOL"]
     print('keywords', keywords)
     product = None
 
