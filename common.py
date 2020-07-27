@@ -185,7 +185,7 @@ def submit_customer_info(session, cookie_jar):
 # cvv = "491"  # 3 digits
 
 
-def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
+def booking_tokyo():
     card_number = "4297690111419380"  # No spaces
     cardholder = "KHONG DUCCONG"
     exp_m = "09"  # 2 digits
@@ -207,6 +207,7 @@ def booking_tokyo(card_number, cardholder, exp_m, exp_y, cvv, id):
         products = get_products(session)
         # Grab the product defined by keywords
         product = keyword_search(session, products, keywords)
+        print('search')
         if (product == None):
             time.sleep(search_delay)
 
@@ -287,6 +288,12 @@ def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
     xxx.join()
 
 
+threads = list()
+for i in range(0,2):
+    x = threading.Thread(target=booking_tokyo, args=())
+    threads.append(x)
+    x.start()
 
-
+for index, thread in enumerate(threads):
+    thread.join()
 
