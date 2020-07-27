@@ -289,7 +289,7 @@ def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
 
 
 threads = list()
-for i in range(0,2):
+for i in range(0,5):
     x = threading.Thread(target=booking_tokyo, args=())
     threads.append(x)
     x.start()
