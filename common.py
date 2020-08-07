@@ -211,7 +211,7 @@ def booking_tokyo():
         if (product == None):
             time.sleep(search_delay)
 
-    print("phuong 1", product)
+    print("tìm thấy product", product)
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
     print(variant)
@@ -219,19 +219,19 @@ def booking_tokyo():
     start = time.time()
     # Get the cart link
     cart_link = generate_cart_link(session, variant)
-    print("phuong 2")
+    print("tạo được link mua hàng")
     # Add the product to cart
     r = add_to_cart(session, variant)
     # Store the cookies
     cj = r.cookies
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
-    print("phuong 3")
+    print("tạo xong phần thanh toán")
     # Submit customer info and get the checkout url
     (r, checkout_link) = submit_customer_info(session, cj)
     # Get the shipping info
     ship = get_shipping(postal_code, country, province, cj)
-    print("phuong 4")
+    print("điền phần thanh toán xong và ghi địa chỉ mua hàng")
     # Get the payment gateway ID
     link = checkout_link + "?step=payment_method"
     r = session.get(link, cookies=cj, verify=False)
@@ -273,12 +273,11 @@ def booking_tokyo():
         "g-recaptcha-repsonse": "",
         "button": ""
         }
-    print("phuong 5")
+    print("tạo ra link để checkout")
     r = session.post(link, cookies=cj, data=payload, verify=False)
-    print("finish", r)
+    print("Mua hàng xong", r)
     end = time.time()
-    print(end -start)
-    print("phuong 6")
+    print('Mua hàng mất thời gian',end -start)
     # database.update_status(id)
 
 
