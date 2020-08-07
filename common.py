@@ -20,7 +20,7 @@ random_size = True
 # To avoid a Shopify soft-ban, a delay of 7.5 seconds is recommended if
 # starting a task much earlier than release time (minutes before release)
 # Otherwise, a 1 second or less delay will be ideal
-search_delay = 1
+search_delay = 3
 # Checkout settings
 email = "khong.minhcong@gmail.com"
 fname = "DUCCONG"
@@ -211,7 +211,7 @@ def booking_tokyo():
         if (product == None):
             time.sleep(search_delay)
 
-    print("phuong 1")
+    print("phuong 1", product)
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
     print(variant)
@@ -289,7 +289,7 @@ def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
 
 
 threads = list()
-for i in range(0,5):
+for i in range(0,3):
     x = threading.Thread(target=booking_tokyo, args=())
     threads.append(x)
     x.start()
