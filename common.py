@@ -188,7 +188,7 @@ def submit_customer_info(session, cookie_jar):
 def booking_tokyo():
     card_number = "4297690111419380"  # No spaces
     cardholder = "KHONG DUCCONG"
-    exp_m = "09"  # 2 digits
+    exp_m = "08"  # 2 digits
     exp_y = "2023"  # 4 digits
     cvv = "781"  # 3 digits
     # Initialize
@@ -197,7 +197,7 @@ def booking_tokyo():
 
     print("bắt đầu tìm sản phẩm")
     # Loop until a product containing all the keywords is found
-    keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
+    keywords = ["MICKEY MOUSE REVERSE Ver. 100%"]
     # keywords = ["BE@RBRICK ANDY WARHOL"]
     print('keywords', keywords)
     product = None
