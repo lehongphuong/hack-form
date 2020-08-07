@@ -195,7 +195,7 @@ def booking_tokyo():
     session = requests.session()
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    print("phuong start 0 ")
+    print("bắt đầu tìm sản phẩm")
     # Loop until a product containing all the keywords is found
     keywords = ["BE@RBRICK 招き猫 銀メッキ 発光"]
     # keywords = ["BE@RBRICK ANDY WARHOL"]
