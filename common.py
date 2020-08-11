@@ -7,6 +7,7 @@ import json
 import urllib3
 import codecs
 import random
+from datetime import datetime
 # import database
 
 ''' ------------------------------ SETTINGS ------------------------------ '''
@@ -20,7 +21,7 @@ random_size = True
 # To avoid a Shopify soft-ban, a delay of 7.5 seconds is recommended if
 # starting a task much earlier than release time (minutes before release)
 # Otherwise, a 1 second or less delay will be ideal
-search_delay = 3
+search_delay = 1
 # Checkout settings
 email = "khong.minhcong@gmail.com"
 fname = "DUCCONG"
@@ -34,17 +35,18 @@ postal_code = "8180117"
 phone = "09082494931"
 # card_number = "4297690111419380"  # No spaces
 # cardholder = "KHONG DUCCONG"
-# exp_m = "09"  # 2 digits
+# exp_m = "08"  # 2 digits
 # exp_y = "2023"  # 4 digits
 # cvv = "781"  # 3 digits
 ''' ------------------------------- MODULES ------------------------------- '''
 
-def get_products(session):
+def get_products(session, page):
     '''
     Gets all the products from a Shopify site.
     '''
     # Download the products
-    link = base_url + "/products.json"
+    # https://mct.tokyo/products.json?page=1&limit=250
+    link = base_url + "/products.json?limit=250&page=" + page
     r = session.get(link, verify=False)
     # Load the product data
     products_json = json.loads(r.text)
@@ -69,7 +71,7 @@ def keyword_search(session, products, keywords):
                 keys += 1
             # If all the keywords were found
             if(keys == len(keywords)):
-                print(keys, len(keywords))
+                print(datetime.now(), keys, len(keywords))
                 # Return the product
                 return product
 
@@ -104,7 +106,7 @@ def get_payment_token(card_number, cardholder, expiry_month, expiry_year, cvv):
     # Return the payment token
     return payment_token
 
-def get_shipping(postal_code, country, province, cookie_jar):
+def get_shipping(postal_code, country, province, cookie_jar, session):
     '''
     Given address details and the cookies of a Shopify checkout session, a shipping option is returned
     '''
@@ -113,13 +115,15 @@ def get_shipping(postal_code, country, province, cookie_jar):
     r = session.get(link, cookies=cookie_jar, verify=False)
     # Load the shipping options
     shipping_options = json.loads(r.text)
+    # print(datetime.now(), 'shipping_options', shipping_options)
     # Select the first shipping option
-    ship_opt = shipping_options["shipping_rates"][0]["name"].replace(' ', "%20")
-    ship_prc = shipping_options["shipping_rates"][0]["price"]
+    # ship_opt = shipping_options["shipping_rates"][0]["name"].replace(' ', "%20")
+    # ship_prc = shipping_options["shipping_rates"][0]["price"]
     # Generate the shipping token to submit with checkout
-    shipping_option = "shopify-" + ship_opt + "-" + ship_prc
+    # shipping_option = "shopify-" + ship_opt + "-" + ship_prc
     # Return the shipping option
-    return shipping_option
+    return 'shopify'
+    # return shipping_option
 
 def add_to_cart(session, variant):
     '''
@@ -169,7 +173,7 @@ def submit_customer_info(session, cookie_jar):
     checkout_link = link
     # POST the data to the checkout URL
     response = session.post(link, cookies=cookie_jar, data=payload, verify=False)
-    print("submit_customer_info", response, checkout_link)
+    print(datetime.now(), "submit_customer_info", response, checkout_link)
 
     # Return the response and the checkout link
     return (response, checkout_link)
@@ -195,49 +199,56 @@ def booking_tokyo():
     session = requests.session()
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    print("bắt đầu tìm sản phẩm")
+    print(datetime.now(), "bắt đầu tìm sản phẩm")
     # Loop until a product containing all the keywords is found
-    keywords = ["MICKEY MOUSE REVERSE Ver. 100%"]
-    # keywords = ["BE@RBRICK ANDY WARHOL"]
-    print('keywords', keywords)
+    keywords = ["BE@RBRICK 招き猫 昇運 蓄光 100"]
+    keywords = ["BE@RBRICK fragmentdesign MICKEY MOUSE REVERSE Ver.100"]
+    print(datetime.now(), 'keywords', keywords)
     product = None
 
+    page = 1
     while (product == None):
         # Grab all the products on the site
-        products = get_products(session)
-        # Grab the product defined by keywords
-        product = keyword_search(session, products, keywords)
-        print('search')
-        if (product == None):
-            time.sleep(search_delay)
+        products = get_products(session, str(page))
+        if len(products) == 0:
+            page = 1
+        else:
+            # Grab the product defined by keywords
+            product = keyword_search(session, products, keywords)
+            print(datetime.now(), 'searching on page ', page)
+            if (product == None):
+                time.sleep(search_delay)
+            page += 1
 
-    print("tìm thấy product", product)
+    print(datetime.now(), "tìm thấy product", product)
     # Get the variant ID for the size
     variant = str(product["variants"][0]["id"])
-    print(variant)
+    print(datetime.now(), variant)
+
+    # variant = '31754466852913'
 
     start = time.time()
     # Get the cart link
     cart_link = generate_cart_link(session, variant)
-    print("tạo được link mua hàng")
+    print(datetime.now(), "tạo được link mua hàng")
     # Add the product to cart
     r = add_to_cart(session, variant)
     # Store the cookies
     cj = r.cookies
     # Get the payment token
     p = get_payment_token(card_number, cardholder, exp_m, exp_y, cvv)
-    print("tạo xong phần thanh toán")
+    print(datetime.now(), "tạo xong phần thanh toán")
     # Submit customer info and get the checkout url
     (r, checkout_link) = submit_customer_info(session, cj)
     # Get the shipping info
-    ship = get_shipping(postal_code, country, province, cj)
-    print("điền phần thanh toán xong và ghi địa chỉ mua hàng")
+    ship = get_shipping(postal_code, country, province, cj, session)
+    print(datetime.now(), "điền phần thanh toán xong và ghi địa chỉ mua hàng")
     # Get the payment gateway ID
     link = checkout_link + "?step=payment_method"
     r = session.get(link, cookies=cj, verify=False)
     bs = soup(r.text, "html.parser")
     div = bs.find("div", {"class": "radio__input"})
-    # print(div)
+    # print(datetime.now(), div)
     gateway = ""
     values = str(div.input).split('"')
     for value in values:
@@ -273,11 +284,11 @@ def booking_tokyo():
         "g-recaptcha-repsonse": "",
         "button": ""
         }
-    print("tạo ra link để checkout")
+    print(datetime.now(), "tạo ra link để checkout")
     r = session.post(link, cookies=cj, data=payload, verify=False)
-    print("Mua hàng xong", r)
+    print(datetime.now(), "Mua hàng xong", r)
     end = time.time()
-    print('Mua hàng mất thời gian',end -start)
+    print(datetime.now(), 'Mua hàng mất thời gian',end -start)
     # database.update_status(id)
 
 
@@ -286,9 +297,8 @@ def booking(card_number, cardholder, exp_m, exp_y, cvv, id):
     xxx.start()
     xxx.join()
 
-
 threads = list()
-for i in range(0,3):
+for i in range(0,1):
     x = threading.Thread(target=booking_tokyo, args=())
     threads.append(x)
     x.start()
